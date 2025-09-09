@@ -12,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import {
   LayoutDashboard,
   Users,
@@ -22,22 +21,41 @@ import {
   Settings,
   Activity,
   UserCog,
+  Wand2,
+  Headphones,
+  Moon,
 } from "lucide-react";
+import React from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { LogOut } from "lucide-react";
 
 export function Sidebar() {
-  // Get the new state and functions from the store
   const { isOpen, openSidebar, closeSidebar } = useSidebar();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    Cookies.remove('mock-auth-session');
+    router.push('/login');
+  };
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/leads", label: "Leads", icon: Users },
-    { href: "/campaign", label: "Campaign", icon: Lightbulb },
+    { href: "/campaigns", label: "Campaigns", icon: Lightbulb },
     { href: "/messages", label: "Messages", icon: MessageSquare, count: 10 },
-    { href: "/linkedin", label: "Linkedin Accounts", icon: Linkedin },
+    { href: "/linkedin-accounts", label: "Linkedin Accounts", icon: Linkedin },
   ];
 
-  // ... (adminItems array remains the same)
+  const bottomNavItems = [
+    { href: "/settings", label: "Setting & Billing", icon: Settings },
+  ];
+
+  const adminItems = [
+    { href: "/activity-logs", label: "Activity logs", icon: Activity },
+    { href: "/user-logs", label: "User logs", icon: UserCog },
+  ];
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -46,53 +64,59 @@ export function Sidebar() {
           "fixed left-0 top-0 z-20 flex h-screen flex-col border-r bg-background transition-all duration-300",
           isOpen ? "w-72" : "w-20"
         )}
-        // Add the hover event handlers here
         onMouseEnter={openSidebar}
         onMouseLeave={closeSidebar}
       >
         <div className="flex h-full flex-col">
-          {/* Top Section */}
           <div className="p-4 border-b">
             <div className={cn("font-bold text-lg", !isOpen && "text-center")}>
               {isOpen ? "LinkBird" : "LB"}
             </div>
-            {isOpen && (
-              <div className="mt-4">
-                <Button variant="ghost" className="w-full justify-start gap-3 px-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback>PE</AvatarFallback>
-                  </Avatar>
-                  <div className="text-left overflow-hidden whitespace-nowrap">
-                    <p className="font-semibold text-sm">Kandid</p>
-                    <p className="text-xs text-muted-foreground">Personal</p>
-                  </div>
-                </Button>
-              </div>
-            )}
           </div>
-
-          {/* Middle Section: Navigation */}
           <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-            {/* Navigation items mapping... (this part remains the same) */}
             <p className={cn("text-xs text-muted-foreground px-2 uppercase", !isOpen && "text-center")}>
               {isOpen ? "Overview" : "•"}
             </p>
             {navItems.map((item) => (
               <Tooltip key={item.href}>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant={pathname === item.href ? "secondary" : "ghost"}
-                    className="w-full justify-start"
-                    asChild
-                  >
-                    <Link href={item.href} className="flex gap-3">
+                  <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
+                    <Link href={item.href} className="flex gap-3 items-center">
                       <item.icon className="h-5 w-5 flex-shrink-0" />
                       {isOpen && <span className="truncate">{item.label}</span>}
                       {isOpen && item.count && (
-                        <span className="ml-auto bg-primary text-primary-foreground rounded-full text-xs px-2 py-0.5">
-                          {item.count}
-                        </span>
+                        <span className="ml-auto bg-primary text-primary-foreground rounded-full text-xs px-2 py-0.5">{item.count}</span>
                       )}
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+              </Tooltip>
+            ))}
+            <p className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
+              {isOpen ? "Settings" : "•"}
+            </p>
+            {bottomNavItems.map((item) => (
+               <Tooltip key={item.href}>
+                 <TooltipTrigger asChild>
+                   <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
+                     <Link href={item.href} className="flex gap-3 items-center">
+                       <item.icon className="h-5 w-5 flex-shrink-0" />
+                       {isOpen && <span className="truncate">{item.label}</span>}
+                     </Link>
+                   </Button>
+                 </TooltipTrigger>
+               </Tooltip>
+            ))}
+            <p className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
+              {isOpen ? "Admin Panel" : "•"}
+            </p>
+            {adminItems.map((item) => (
+              <Tooltip key={item.href}>
+                <TooltipTrigger asChild>
+                  <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
+                    <Link href={item.href} className="flex gap-3 items-center">
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      {isOpen && <span>{item.label}</span>}
                     </Link>
                   </Button>
                 </TooltipTrigger>
@@ -101,10 +125,16 @@ export function Sidebar() {
             ))}
           </nav>
 
-          {/* Bottom Section: User Profile */}
           <div className="mt-auto p-4 border-t">
-            {/* The toggle button is now removed */}
-            <Button variant="ghost" className="w-full justify-start gap-3 px-2 overflow-hidden">
+            {isOpen && (
+              <div className="flex justify-around items-center mb-4">
+                <Button variant="ghost" size="icon"><MessageSquare className="h-5 w-5 text-muted-foreground" /></Button>
+                <Button variant="ghost" size="icon"><Wand2 className="h-5 w-5 text-muted-foreground" /></Button>
+                <Button variant="ghost" size="icon"><Headphones className="h-5 w-5 text-muted-foreground" /></Button>
+                <Button variant="ghost" size="icon"><Moon className="h-5 w-5 text-muted-foreground" /></Button>
+              </div>
+            )}
+            <Button variant="ghost" className="w-full justify-start gap-3 px-2 overflow-hidden items-center">
               <Avatar className="h-8 w-8">
                 <AvatarFallback>BK</AvatarFallback>
               </Avatar>
@@ -115,6 +145,12 @@ export function Sidebar() {
                 </div>
               )}
             </Button>
+            {isOpen && (
+              <Button variant="outline" size="sm" onClick={handleLogout} className="w-full mt-2">
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            )}
           </div>
         </div>
       </aside>

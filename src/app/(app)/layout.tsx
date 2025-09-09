@@ -1,6 +1,6 @@
 "use client";
 
-import { Header } from "@/components/header"; // Import Header
+import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { useSidebar } from "@/stores/use-sidebar";
 import { cn } from "@/lib/utils";
@@ -13,9 +13,8 @@ export default function AppLayout({
   const { isOpen } = useSidebar();
 
   return (
-    <div className="flex h-screen bg-muted/40">
+    <div className="flex min-h-screen bg-muted/40">
       <Sidebar />
-      {/* Main content area */}
       <div
         className={cn(
           "flex flex-col flex-1 transition-all duration-300",
