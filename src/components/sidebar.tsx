@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image"; // Import the Next.js Image component
 import { useSidebar } from "@/stores/use-sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,11 +25,11 @@ import {
   Wand2,
   Headphones,
   Moon,
+  LogOut,
 } from "lucide-react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { LogOut } from "lucide-react";
 
 export function Sidebar() {
   const { isOpen, openSidebar, closeSidebar } = useSidebar();
@@ -36,8 +37,8 @@ export function Sidebar() {
   const router = useRouter();
 
   const handleLogout = () => {
-    Cookies.remove('mock-auth-session');
-    router.push('/login');
+    Cookies.remove("mock-auth-session");
+    router.push("/login");
   };
 
   const navItems = [
@@ -68,59 +69,99 @@ export function Sidebar() {
         onMouseLeave={closeSidebar}
       >
         <div className="flex h-full flex-col">
-          <div className="p-4 border-b">
-            <div className={cn("font-bold text-lg", !isOpen && "text-center")}>
-              {isOpen ? "LinkBird" : "LB"}
-            </div>
+          <div className="p-4 border-b flex items-center h-[69px]">
+            <Link href="/dashboard" className="flex items-center gap-2 w-full">
+              <Image
+                src="/logo.png"
+                alt="LinkBird Logo"
+                width={28}
+                height={28}
+              />
+              {isOpen && (
+                <span className="font-bold text-lg ml-1">LinkBird</span>
+              )}
+            </Link>
           </div>
+
           <nav className="flex-1 space-y-1 p-2 overflow-y-auto">
-            <p className={cn("text-xs text-muted-foreground px-2 uppercase", !isOpen && "text-center")}>
+            <p className={cn("text-xs text-muted-foreground px-2 uppercase",!isOpen && "text-center")}>
               {isOpen ? "Overview" : "•"}
             </p>
             {navItems.map((item) => (
               <Tooltip key={item.href}>
                 <TooltipTrigger asChild>
-                  <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
-                    <Link href={item.href} className="flex gap-3 items-center">
+                  <Button
+                    variant={pathname === item.href ? "secondary" : "ghost"}
+                    className="w-full justify-start h-10"
+                    asChild
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex gap-3 items-center"
+                    >
                       <item.icon className="h-5 w-5 flex-shrink-0" />
-                      {isOpen && <span className="truncate">{item.label}</span>}
+                      {isOpen && (
+                        <span className="truncate">{item.label}</span>
+                      )}
                       {isOpen && item.count && (
-                        <span className="ml-auto bg-primary text-primary-foreground rounded-full text-xs px-2 py-0.5">{item.count}</span>
+                        <span className="ml-auto bg-primary text-primary-foreground rounded-full text-xs px-2 py-0.5">
+                          {item.count}
+                        </span>
                       )}
                     </Link>
                   </Button>
                 </TooltipTrigger>
+                <TooltipContent side="right">{item.label}</TooltipContent>
               </Tooltip>
             ))}
-            <p className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
+            <p
+              className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
               {isOpen ? "Settings" : "•"}
             </p>
             {bottomNavItems.map((item) => (
-               <Tooltip key={item.href}>
-                 <TooltipTrigger asChild>
-                   <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
-                     <Link href={item.href} className="flex gap-3 items-center">
-                       <item.icon className="h-5 w-5 flex-shrink-0" />
-                       {isOpen && <span className="truncate">{item.label}</span>}
-                     </Link>
-                   </Button>
-                 </TooltipTrigger>
-               </Tooltip>
+              <Tooltip key={item.href}>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={pathname === item.href ? "secondary" : "ghost"}
+                    className="w-full justify-start h-10"
+                    asChild
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex gap-3 items-center"
+                    >
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      {isOpen && (
+                        <span className="truncate">{item.label}</span>
+                      )}
+                    </Link>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">{item.label}</TooltipContent>
+              </Tooltip>
             ))}
-            <p className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
+            <p
+              className={cn("text-xs text-muted-foreground px-2 uppercase pt-4", !isOpen && "text-center")}>
               {isOpen ? "Admin Panel" : "•"}
             </p>
             {adminItems.map((item) => (
               <Tooltip key={item.href}>
                 <TooltipTrigger asChild>
-                  <Button variant={pathname === item.href ? "secondary" : "ghost"} className="w-full justify-start h-10" asChild>
-                    <Link href={item.href} className="flex gap-3 items-center">
+                  <Button
+                    variant={pathname === item.href ? "secondary" : "ghost"}
+                    className="w-full justify-start h-10"
+                    asChild
+                  >
+                    <Link
+                      href={item.href}
+                      className="flex gap-3 items-center"
+                    >
                       <item.icon className="h-5 w-5 flex-shrink-0" />
                       {isOpen && <span>{item.label}</span>}
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                {!isOpen && <TooltipContent side="right">{item.label}</TooltipContent>}
+                <TooltipContent side="right">{item.label}</TooltipContent>
               </Tooltip>
             ))}
           </nav>
@@ -128,25 +169,45 @@ export function Sidebar() {
           <div className="mt-auto p-4 border-t">
             {isOpen && (
               <div className="flex justify-around items-center mb-4">
-                <Button variant="ghost" size="icon"><MessageSquare className="h-5 w-5 text-muted-foreground" /></Button>
-                <Button variant="ghost" size="icon"><Wand2 className="h-5 w-5 text-muted-foreground" /></Button>
-                <Button variant="ghost" size="icon"><Headphones className="h-5 w-5 text-muted-foreground" /></Button>
-                <Button variant="ghost" size="icon"><Moon className="h-5 w-5 text-muted-foreground" /></Button>
+                <Button variant="ghost" size="icon">
+                  <MessageSquare className="h-5 w-5 text-muted-foreground" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Wand2 className="h-5 w-5 text-muted-foreground" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Headphones className="h-5 w-5 text-muted-foreground" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Moon className="h-5 w-5 text-muted-foreground" />
+                </Button>
               </div>
             )}
-            <Button variant="ghost" className="w-full justify-start gap-3 px-2 overflow-hidden items-center">
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 px-2 overflow-hidden items-center"
+            >
               <Avatar className="h-8 w-8">
                 <AvatarFallback>BK</AvatarFallback>
               </Avatar>
               {isOpen && (
                 <div className="text-left overflow-hidden whitespace-nowrap">
-                  <p className="font-semibold text-sm">Bhavya from Kandid</p>
-                  <p className="text-xs text-muted-foreground">bhavya@kandid.ai</p>
+                  <p className="font-semibold text-sm">
+                    Bhavya from Kandid
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    bhavya@kandid.ai
+                  </p>
                 </div>
               )}
             </Button>
             {isOpen && (
-              <Button variant="outline" size="sm" onClick={handleLogout} className="w-full mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="w-full mt-2"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
