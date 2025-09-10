@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from 'lucide-react';
-import Link from 'next/link';
 
 // Define the shape of our data
 type Campaign = {
