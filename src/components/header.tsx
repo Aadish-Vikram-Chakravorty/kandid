@@ -36,7 +36,7 @@ export function Header() {
       <Button
         variant="outline"
         size="icon"
-        className="sm:hidden" // Only show on small screens
+        className="sm:hidden" 
         onClick={toggle}
       >
         <PanelLeft className="h-5 w-5" />
@@ -68,7 +68,6 @@ export function Header() {
         </BreadcrumbList>
       </Breadcrumb>
       
-      {/* Action buttons will go here later */}
       <div className="ml-auto"></div> 
     </header>
   );

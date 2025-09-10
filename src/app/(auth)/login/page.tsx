@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Chrome, Mail } from 'lucide-react'; // Import icons
+import { Chrome, Mail } from 'lucide-react'; 
 import Link from 'next/link';
 
 export default function LoginPage() {

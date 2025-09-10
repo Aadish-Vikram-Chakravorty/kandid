@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image"; // Import the Next.js Image component
+import Image from "next/image"; 
 import { useSidebar } from "@/stores/use-sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

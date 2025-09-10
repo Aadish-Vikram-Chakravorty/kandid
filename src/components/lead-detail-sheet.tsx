@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useLeadSheet } from "@/stores/use-lead-sheet";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -14,16 +15,13 @@ import { Badge } from "./ui/badge";
 import { Skeleton } from "./ui/skeleton";
 import { Separator } from "@/components/ui/separator";
 import { MessageSquare, Link, CheckCircle } from "lucide-react";
-import React from 'react';
 
 type Lead = {
   id: number;
   name: string;
   email: string;
   company: string;
-  campaignName: string;
   status: 'Pending' | 'Contacted' | 'Responded' | 'Converted';
-  lastContactedAt: string;
   avatar: string;
 };
 
@@ -38,7 +36,6 @@ const fetchLeadDetails = async (leadId: number): Promise<Lead> => {
 export function LeadDetailSheet() {
   const { isOpen, leadId, onClose } = useLeadSheet();
 
-  // THE FIX IS HERE: Restoring the full configuration for useQuery
   const { data: lead, isLoading, isError } = useQuery<Lead>({
     queryKey: ["lead", leadId],
     queryFn: () => fetchLeadDetails(leadId!),
@@ -48,22 +45,15 @@ export function LeadDetailSheet() {
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-md p-0">
-        {/* ... (The rest of the JSX remains the same as the last correct version) ... */}
-        <SheetHeader className="text-left p-6">
-          {isLoading || !lead ? (
-            <>
-              <SheetTitle className="sr-only">Loading Lead</SheetTitle>
-              <SheetDescription className="sr-only">Please wait...</SheetDescription>
-            </>
-          ) : (
-            <>
-              <SheetTitle className="sr-only">{lead.name}</SheetTitle>
-              <SheetDescription className="sr-only">Details for {lead.name}</SheetDescription>
-            </>
-          )}
+        <SheetHeader className="p-6">
+          <SheetTitle className="sr-only">Lead Profile</SheetTitle>
+          <SheetDescription className="sr-only">
+            Detailed information for the selected lead.
+          </SheetDescription>
         </SheetHeader>
+
         {isLoading ? (
-          <div className="space-y-4 p-6 pt-0">
+          <div className="space-y-4 px-6">
             <div className="flex items-center gap-4">
               <Skeleton className="h-16 w-16 rounded-full" />
               <div className="space-y-2">
@@ -78,7 +68,7 @@ export function LeadDetailSheet() {
         ) : isError || !lead ? (
           <div className="p-6">Failed to load lead details.</div>
         ) : (
-          <div className="p-6 pt-0">
+          <div className="px-6">
             <div className="flex items-center gap-4 mb-6">
               <Avatar className="h-16 w-16">
                 <AvatarImage src={lead.avatar} />

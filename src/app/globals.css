@@ -52,8 +52,8 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
---secondary: 210.2 40% 97.2%; /* New light blue background */
---secondary-foreground: 222.2 47.4% 11.2%; /* New dark blue text */
+  --secondary: 210.2 40% 97.2%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
@@ -86,9 +86,8 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
-  /* Inside the .dark selector */
---secondary: 222.2 47.4% 11.2%; /* New dark blue background */
---secondary-foreground: 210 40% 98%; /* New light text */
+  --secondary: 222.2 47.4% 11.2%;
+  --secondary-foreground: 210 40% 98%;
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
   --accent: oklch(0.269 0 0);
@@ -116,7 +115,8 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground antialiased; 
+    @apply bg-background text-foreground antialiased;
   }
 }

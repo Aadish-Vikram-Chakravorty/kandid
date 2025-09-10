@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from 'next/server'; // Import NextRequest
+import { type NextRequest, NextResponse } from 'next/server'; 
 import { faker } from '@faker-js/faker';
 
 // A consistent list of 50 fake leads with all properties
@@ -18,9 +18,8 @@ const FAKE_LEADS = Array.from({ length: 50 }, (_, i) => ({
   avatar: faker.image.avatar(),
 }));
 
-// THE FIX IS HERE: Corrected the function signature
 export async function GET(
-  request: NextRequest, // Use NextRequest instead of Request
+  request: NextRequest, 
   { params }: { params: { id: string } }
 ) {
   const leadId = parseInt(params.id, 10);

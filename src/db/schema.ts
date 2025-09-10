@@ -9,7 +9,6 @@ import {
   integer,
 } from 'drizzle-orm/pg-core';
 
-// Define an ENUM for lead status, which is better for database integrity
 export const leadStatusEnum = pgEnum('lead_status', [
   'Pending',
   'Contacted',
@@ -17,7 +16,6 @@ export const leadStatusEnum = pgEnum('lead_status', [
   'Converted',
 ]);
 
-// Define an ENUM for campaign status
 export const campaignStatusEnum = pgEnum('campaign_status', [
   'Draft',
   'Active',

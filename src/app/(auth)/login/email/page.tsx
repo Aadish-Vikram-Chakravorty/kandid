@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,22 +15,24 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import React from 'react';
 
 export default function LoginWithEmailPage() {
   const [showPassword, setShowPassword] = useState(false);
-
-  // State for form inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent the form from reloading the page
+    e.preventDefault();
     console.log("Submitting Login Form...");
-    console.log({
-      email,
-      password,
-    });
-    alert("Login submitted! Check the browser console (F12) to see the data.");
+    console.log({ email, password });
+
+    // Simulate a successful login by setting a cookie
+    Cookies.set('mock-auth-session', 'true', { expires: 3 }); // Cookie lasts for 3 day
+
+    // Redirect the user to the dashboard
+    router.push('/dashboard');
   };
 
   return (
@@ -55,6 +59,7 @@ export default function LoginWithEmailPage() {
               placeholder="emailid@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="grid gap-2 relative">
@@ -65,6 +70,7 @@ export default function LoginWithEmailPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             <Button
               type="button"
